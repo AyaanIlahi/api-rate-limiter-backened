@@ -17,6 +17,6 @@ export const validateUser = (req, res, next) => {
         req.userID = decoded.userID;  // ✅ Extract UUID instead of IP
         next();
     } catch (err) {
-        return res.status(401).json({ message: 'Invalid token.' });
+        return res.status(401).json({ message: 'Invalid token or Expired token' });
     }
 };
