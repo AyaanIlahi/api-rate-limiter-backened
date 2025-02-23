@@ -2,11 +2,11 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';  // ✅ Import UUID generator
 
 dotenv.config();
 const router = express.Router();
 
-//Route to generate a JWT (user creation)
 router.get('/', (req, res) => {
     console.log("🔍 Checking for existing token...");
 
@@ -26,7 +26,8 @@ router.get('/', (req, res) => {
     }
 
     // ✅ If no valid token, generate a new one
-    const userID = req.ip.toString(); 
+    const userID = uuidv4();  // Generate a unique UUID for the user
+    console.log("user id during creation",userID);
     const newToken = jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
     // ✅ Store new token in HTTP-only cookie
@@ -34,10 +35,11 @@ router.get('/', (req, res) => {
 
     res.json({ message: 'New token created successfully!', token: newToken });
 });
+
+// ✅ Logout Route (Deletes Token)
 router.get('/logout', (req, res) => {
-    res.clearCookie('token'); // 🔥 Deletes the token cookie
+    res.clearCookie('token'); // Deletes the token cookie
     res.json({ message: "Token has been deleted!" });
 });
-
 
 export default router;
