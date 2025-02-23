@@ -1,15 +1,15 @@
 import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { validateUser } from '../middlewares/middlewareValidate.js';
-import { rateLimitMiddleware } from '../middlewares/middlewareUnsplashRateLimit.js';
+import { validateUser } from '../middlewares/validate.js';
+import { rateLimitUnsplash } from '../middlewares/unsplashRateLimit.js';
 
 dotenv.config();
 const router = express.Router();
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 // ✅ Route to search images from Unsplash (passes through both middlewares)
-router.get('/:query', validateUser, rateLimitMiddleware, async (req, res) => {
+router.get('/:query', validateUser, rateLimitUnsplash, async (req, res) => {
     const query = req.params.query;
     
     console.log(`🔍 Searching Unsplash for: ${query}`);
@@ -26,6 +26,7 @@ router.get('/:query', validateUser, rateLimitMiddleware, async (req, res) => {
 
         res.json(response.data); // ✅ Send image search results
     } catch (error) {
+        console.log('failed call');
         console.error("❌ Unsplash API Error:", error.response?.data || error.message);
         res.status(500).json({ message: 'Failed to fetch images from Unsplash.', error: error.response?.data || error.message });
     }

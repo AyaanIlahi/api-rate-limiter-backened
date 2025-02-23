@@ -1,10 +1,12 @@
 import express from 'express';
 import axios from 'axios';
 //import { redis } from './connections.js';
+import { validateUser } from '../middlewares/validate.js';
+import { rateLimitPokemon } from '../middlewares/rateLimitPokemon.js';
 
 const router = express.Router(); // Create Router
 // GET Pokémon by name
-router.get("/:name", async (req, res) => {
+router.get("/:name", validateUser, rateLimitPokemon, async (req, res) => {
   try {
     const { name } = req.params;
 
