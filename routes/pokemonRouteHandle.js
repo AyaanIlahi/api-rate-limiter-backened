@@ -32,7 +32,7 @@ router.get("/:name", validateUser, rateLimitPokemon, async (req, res) => {
       image: response.data.sprites.front_default,
       abilities: abilities
     };
-
+    console.log("Successfull in PokemonAPI call");
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "Pokémon not found!" });

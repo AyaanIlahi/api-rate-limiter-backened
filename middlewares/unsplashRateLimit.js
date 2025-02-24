@@ -1,22 +1,22 @@
-const unsplashRequests = {}; // { userID: { requestCount: number, lastReset: timestamp } }
+import {getData,setData} from '../databaseCalls/userData.js';
 
-/**
- * Middleware to enforce API rate limits (1 request per day per user)
- */
-export const rateLimitUnsplash = (req, res, next) => {
+export const rateLimitUnsplash =async (req, res, next) => {
     const userID = req.userID;  // ✅ Unique user ID from token
+    const userKey = `user:${userID}`;
 
-    if (!unsplashRequests[userID]) {
-        unsplashRequests[userID] = { requestCount: 0};
+    let userData=await getData(`user:${userID}`);
+    if (userData===null) {
+        userData={
+            pokeCount: 0,
+            unsplCount: 0,
+        };
     }
 
-    const userData = unsplashRequests[userID];
-
-    if (userData.requestCount >= 2) {  // ✅ Unsplash API limit: 10 requests per day
+    if (userData.unsplCount >= 2) {  // ✅ Unsplash API limit: 2 requests per day
         return res.status(403).json({ message: 'Unsplash API rate limit exceeded. Try again tomorrow!' });
     }
 
-    userData.requestCount += 1;
-    console.log(unsplashRequests);
+    userData.unsplCount += 1;
+    await setData(userKey,userData);
     next();
 };

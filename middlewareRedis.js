@@ -1,4 +1,4 @@
-import { redis } from './connections.js';
+import { redis } from './databaseCalls/connections.js';
 
 const rateLimiter = async (req, res, next) => {
     try {

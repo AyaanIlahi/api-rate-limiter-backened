@@ -9,8 +9,8 @@ const redis = new Redis({
     token: process.env.UPSTASH_REDIS_REST_TOKEN, 
 });
 
-// Test Redis connection
-/*async function testRedis() {
+//Test Redis connection
+async function testRedis() {
   try {
     await redis.set('test', 'Hello from Upstash!');
     const value = await redis.get('test');
@@ -19,6 +19,6 @@ const redis = new Redis({
     console.error('Redis Connection Error:', err);
   }
 }
-testRedis();*/
+testRedis();
 
 export { redis };
