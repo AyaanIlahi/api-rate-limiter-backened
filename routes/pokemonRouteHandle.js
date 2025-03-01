@@ -1,6 +1,5 @@
 import express from 'express';
 import axios from 'axios';
-//import { redis } from './connections.js';
 import { validateUser } from '../middlewares/validate.js';
 import { rateLimitPokemon } from '../middlewares/rateLimitPokemon.js';
 
