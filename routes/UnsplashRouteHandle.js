@@ -9,7 +9,7 @@ const router = express.Router();
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 // ✅ Route to search images from Unsplash (passes through both middlewares)
-router.get('/:query', validateUser, rateLimitUnsplash, async (req, res) => {
+router.get('/:query', validateUser ,rateLimitUnsplash, async (req, res) => {
     const query = req.params.query;
     
     console.log(`🔍 Searching Unsplash for: ${query}`);
