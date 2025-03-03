@@ -34,7 +34,7 @@ router.get("/:name", validateUser, rateLimitPokemon, async (req, res) => {
     console.log("Successfull in PokemonAPI call");
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: "Pokémon not found!" });
+    res.status(500).json({ message: "Pokémon not found!" });
   }
 });
 
