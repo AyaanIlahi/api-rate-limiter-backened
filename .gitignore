@@ -1,3 +1,5 @@
 node_modules/
 process.env
 .DS_Store
+.env
+.enc.local
