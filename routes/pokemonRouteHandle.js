@@ -22,14 +22,14 @@ router.get("/:name", validateUser, rateLimitPokemon, async (req, res) => {
         };
       })
     );
-
     // Final response
     const data = {
       name: response.data.name,
       id: response.data.id,
       type: response.data.types.map(t => t.type.name),
       image: response.data.sprites.front_default,
-      abilities: abilities
+      abilities: abilities,
+      totalRequests: res.totalRequests,
     };
     console.log("Successfull in PokemonAPI call");
     res.json(data);

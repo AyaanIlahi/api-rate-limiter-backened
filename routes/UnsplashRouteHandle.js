@@ -20,11 +20,10 @@ router.get('/:query', validateUser ,rateLimitUnsplash, async (req, res) => {
             params: {
                 query: query,
                 client_id: UNSPLASH_ACCESS_KEY,
-                per_page: 5 // Fetch top 5 images
+                per_page: 15
             }
         });
-
-        res.json(response.data); //Send image search results
+        res.json(response.data);//Send image search results
     } catch (error) {
         console.log('failed call');
         console.error("Unsplash API Error:", error.response?.data || error.message);

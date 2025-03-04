@@ -7,12 +7,12 @@ export const rateLimitUnsplash =async (req, res, next) => {
     let userData=await getData(`user:${userID}`);
     if (userData===null) {
         userData={
-            pokeCount: 0,
+            pokemon: {count:0, expireTime:0},
             unsplCount: 0,
         };
     }
 
-    if (userData.unsplCount >= 4) {  //Unsplash API limit: 2 requests per day
+    if (userData.unsplCount >= 5) {  //Unsplash API limit: 5 requests per day
         return res.status(403).json({ message: 'Unsplash API rate limit exceeded. Try again tomorrow!' });
     }
 
