@@ -13,8 +13,8 @@ export const validateUser = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);  // ✅ Verify JWT
-        req.userID = decoded.userID;  // ✅ Extract UUID instead of IP
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);  //Verify JWT
+        req.userID = decoded.userID;  //Extract UUID instead of IP
         next();
     } catch (err) {
         return res.status(401).json({ message: 'Invalid token or Expired token' });
