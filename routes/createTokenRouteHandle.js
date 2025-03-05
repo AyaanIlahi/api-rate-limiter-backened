@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
     const newToken = jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
     //Store new token in HTTP-only cookie
-    res.cookie('token', newToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 86400000 });
+    res.cookie('token', newToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production',sameSite: "None", maxAge: 86400000 });
 
     res.json({ message: 'New token created successfully!', token: newToken });
 });
