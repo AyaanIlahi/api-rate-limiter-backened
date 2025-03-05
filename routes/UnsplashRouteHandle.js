@@ -2,7 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { validateUser } from '../middlewares/validate.js';
-import { rateLimitUnsplash } from '../middlewares/unsplashRateLimit.js';
+import { rateLimitUnsplash } from '../middlewares/rateLimitUnsplash.js';
 
 dotenv.config();
 const router = express.Router();
@@ -23,9 +23,11 @@ router.get('/:query', validateUser ,rateLimitUnsplash, async (req, res) => {
                 per_page: 15
             }
         });
-        res.json(response.data);//Send image search results
+        res.json({
+            data: response.data,
+            totalRequests: req.totalRequests,
+        });//Send image search results
     } catch (error) {
-        console.log('failed call');
         console.error("Unsplash API Error:", error.response?.data || error.message);
         res.status(500).json({ message: 'Failed to fetch images from Unsplash.', error: error.response?.data || error.message });
     }

@@ -18,5 +18,6 @@ export const rateLimitUnsplash =async (req, res, next) => {
 
     userData.unsplCount += 1;
     await setData(userKey,userData);
+    req.totalRequests=userData.unsplCount;
     next();
 };

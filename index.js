@@ -1,6 +1,5 @@
 import express from 'express';
 import { redis } from './databaseCalls/connections.js'; // Import Redis connection
-import rateLimiter from './middlewareRedis.js'; //Import Rate Limiter
 import axios from 'axios';
 import pokemonRoutes from "./routes/pokemonRouteHandle.js";
 import unsplashRoute from './routes/unsplashRouteHandle.js';  // Import Unsplash API routes
