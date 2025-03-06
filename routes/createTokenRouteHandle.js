@@ -1,8 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { v4 as uuidv4 } from 'uuid';  //Import UUID generator
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config();
 const router = express.Router();
@@ -10,40 +9,31 @@ const router = express.Router();
 router.get('/', (req, res) => {
     console.log("🔍 Checking for existing token...");
 
-    // Check if token exists in cookies
-    const existingToken = req.cookies.token;
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    console.log(authHeader);
+    let existingToken = authHeader && authHeader.split(" ")[1]; // Extract token if present
 
     if (existingToken) {
         try {
             // Verify if the token is valid
             const decoded = jwt.verify(existingToken, process.env.JWT_SECRET);
             console.log("Existing valid token found:", decoded);
-
-            return res.json({ message: 'You already have a valid token!', token: existingToken });
+            return res.json({ message: 'You already have a valid token!'});
         } catch (err) {
-            console.warn("⚠️ Token expired or invalid. Generating a new one...");
+            console.warn("⚠️ Token expired or invalid. Generate a new one.");
         }
     }
 
-    //If no valid token, generate a new one
-    const userID = uuidv4();  // Generate a unique UUID for the user
-    console.log("user id during creation",userID);
+    // Generate a new JWT if no valid token
+    const userID = uuidv4();
+    console.log("🆕 New user ID created:", userID);
+
     const newToken = jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    //Store new token in HTTP-only cookie
-    res.cookie('token', newToken, {
-        httpOnly: true,  // Prevents client-side access
-        secure: true,  // Ensures cookies are only sent over HTTPS
-        sameSite: "None",  // Required for cross-origin requests
-        maxAge: 86400000,  // 1 day expiration
-    });
-    res.json({ message: 'New token created successfully!', token: newToken });
+    // Return token in JSON response (Client stores it in Local Storage)
+    res.json({ message: 'New token created successfully! It will expire after one day.',token: newToken});
 });
 
-//Logout Route (Deletes Token)
-router.get('/logout', (req, res) => {
-    res.clearCookie('token'); // Deletes the token cookie
-    res.json({ message: "Token has been deleted!" });
-});
-
+// Logout Route (Frontend removes token) Future Addition
 export default router;
