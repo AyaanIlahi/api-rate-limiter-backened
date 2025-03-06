@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
             // Verify if the token is valid
             const decoded = jwt.verify(existingToken, process.env.JWT_SECRET);
             console.log("Existing valid token found:", decoded);
-            return res.json({ message: 'You already have a valid token!'});
+            return res.json({ message: 'You already have a valid token!',token: existingToken});
         } catch (err) {
             console.warn("⚠️ Token expired or invalid. Generate a new one.");
         }
